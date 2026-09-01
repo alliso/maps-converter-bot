@@ -47,9 +47,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # arm64 is emulated; the runners are amd64 only.
-      - uses: docker/setup-qemu-action@v4
-
       - uses: docker/setup-buildx-action@v4
 
       # A pull request only proves the Dockerfile still builds; pushing an
@@ -74,7 +71,6 @@ jobs:
       - uses: docker/build-push-action@v7
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
