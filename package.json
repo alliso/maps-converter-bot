@@ -47,7 +47,7 @@
     "@stryker-mutator/core": "^10.0.0",
     "@stryker-mutator/jest-runner": "^10.0.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^26.4.0",
+    "@types/node": "^26.5.1",
     "jest": "^30.5.1",
     "ts-jest": "^29.4.12",
     "tsx": "^4.23.13",
