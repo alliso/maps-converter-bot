@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
   "packageManager": "npm",
-  "ignorePatterns": ["dist", "coverage", "reports", "*.tsbuildinfo"],
+  "ignorePatterns": ["dist", "coverage", "reports", "*.tsbuildinfo", "tsconfig*.json"],
   "testRunner": "jest",
   "jest": {
     "projectType": "custom",

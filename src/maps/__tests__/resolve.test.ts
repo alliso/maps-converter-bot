@@ -170,6 +170,32 @@ describe("geocoding a place we only know by name", () => {
   });
 });
 
+describe("the default geocoder", () => {
+  // Dropping the options would send geocode to the real fetch: fail fast
+  // instead of reaching Nominatim from a test.
+  beforeEach(() => {
+    jest.spyOn(globalThis, "fetch").mockRejectedValue(new Error("no network in tests"));
+  });
+  afterEach(() => jest.restoreAllMocks());
+
+  it("gets the injected fetch and the user's language", async () => {
+    const fetchImpl = jest.fn(async () => ({
+      ok: true,
+      json: async () => [{ lat: "40.4153", lon: "-3.7089", display_name: "Calle Mayor, Madrid" }],
+    })) as unknown as typeof fetch;
+
+    const result = await resolveSharedContent("Calle Mayor 1, Madrid", { fetchImpl, language: "es" });
+
+    expect(fetchImpl).toHaveBeenCalledWith(
+      expect.stringContaining("nominatim.openstreetmap.org"),
+      expect.objectContaining({
+        headers: expect.objectContaining({ "Accept-Language": "es" }),
+      }),
+    );
+    expect(result.ok && result.place.coordinates?.latitude).toBeCloseTo(40.4153, 4);
+  });
+});
+
 describe("expansions that lead nowhere", () => {
   it("gives up when the short link expands to something that is not a place", async () => {
     const result = await resolveSharedContent("https://maps.app.goo.gl/abc123", {
